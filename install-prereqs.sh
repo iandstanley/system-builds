@@ -1,3 +1,3 @@
 #!/bin/sh
-sudo apt install build-essentials curl git wget
+sudo apt install build-essential curl git wget
 
