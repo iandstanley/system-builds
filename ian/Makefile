@@ -8,31 +8,37 @@ help:
 	| sort \
 	| awk 'BEGIN {FS = ":.*?## " ; print "\n\033[36mBuild system command options:\033[0m \n" }; {printf "  \033[36m%-30s\033[0m %s\n", $$1, $$2}; END { print "" }'
 
-test: dummy
+test: dummy1 dummy2
 	@echo run test stanza
-dummy:
-	@echo run dummy stanza
+dummy1:
+	@echo run dummy stanza 1
+dummy2:
+	@echo run dummy stanza 2
 
 ################################################################################
-setup: network hardware security users ## SETUP THIS MACHINE
+setup:  hardware network security users software  ## SETUP THIS MACHINE
 
-network: 		## configure network
-	ip a
+network: dhcp		## configure network
 
-firewall: firewall-rules	## setup firewall
-	sudo ufw enable
-	sudo ufw status verbose numbered
-firewall-install: firewall-rules
+static-ip:
+	echo not used
+dhcp:
+	@echo Using DHCP ... default config
+
+firewall: firewall-install firewall-rules	## setup firewall
+firewall-install: 
 	sudo apt install -y ufw
 firewall-rules:
+	sudo ufw --force reset 
 	cat $(PWD)/files/ufw_rules | xargs -L 1 sudo ufw 
+	sudo ufw enable
+	sudo ufw status verbose numbered
 
 hardware: 	## install hardware support
 	xargs -a files/hardware-packages sudo apt-get install -y
 
-security:	gpgconfig sshconfig 	## secure server
+security:	firewall gpgconfig sshconfig 	## secure server
 	sudo apt install -y apparmor  ufw 
-
 
 users: 		## configure users
 	echo "setting up users"
@@ -40,11 +46,30 @@ users: 		## configure users
 	sed -i 's/\ /,/g'  $(PWD)/files/users/ian/groups
 	-sudo usermod ian --groups $(shell cat $(PWD)/files/users/ian/groups )
 
-software:	software-repos pkginstall 	## setup software
+software:	software-repos pkginstall other-software	## setup software
 software-repos:
 	sudo install -o root -g root -m 0644 files/apt/* /etc/apt/sources.list.d 
+	sudo apt update
+other-software:		torbrowser  pivy-tool
+
+local-services:	gophernicus 	## Install services run locally
 
 ################################################################################
+
+gopher:
+	sudo apt install -y gopher lynx
+
+gophernicus:	gopher	## install Gophernicus 
+	rm -rf $(HOME)/Projects/gophernicus
+	git clone git@github.com:gophernicus/gophernicus.git $(HOME)/Projects/gophernicus
+	cd $(HOME)/Projects/gophernicus ; ./configure --listener=systemd
+	make -C $(HOME)/Projects/gophernicus 
+	sudo make -C $(HOME)/Projects/gophernicus  install
+	sudo systemctl enable gophernicus.socket
+	sudo systemctl start gophernicus.socket
+	rm -rf $(HOME)/Projects/gophernicus
+pygopherd:
+	sudo apt install -y pygopherd
 
 save-my-groups:
 	groups | tee $(PWD)/files/users/ian/groups
@@ -144,3 +169,4 @@ pkginstall: 	## Install chosen packages
 	xargs -a files/pkglist  sudo apt-get install -y
 
 allbackup: backup pipbackup		## Make list of installed files and PIP packages
+
