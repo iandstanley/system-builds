@@ -1,5 +1,0 @@
-[mysticbbs]
-title=Mystic BBS server
-description=Mystic BBS bulletin board system
-ports=2222,2223,24554/tcp
-

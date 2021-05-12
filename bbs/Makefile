@@ -3,6 +3,7 @@ IPADDR = 192.168.1.5
 TORBROWSER = 10.0.16
 TORTMP = tmp/torversion
 MYSTICBBS = mys112a46_pi
+CRYPTLIB = cryptlib345
 
 help: 
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
@@ -18,6 +19,7 @@ network: static_ip firewall
 	@echo setup network
 static_ip: 
 	@echo setup static ip
+	cd $(PWD)/files ; sudo install -o root -g netdev -m 664 $(PWD)/files/dhcpcd.conf /etc
 firewall: firewall-install firewall-rules
 firewall-install:
 	sudo apt install -y ufw
@@ -26,7 +28,7 @@ firewall-install:
 	sudo ufw default deny incoming
 	sudo ufw default allow outgoing
 	sudo ufw limit ssh 
-	sudo ufw allow 2022:2023 
+	sudo ufw allow 2222:2223 
 	sudo ufw allow binkp
 	sudo ufw allow dns
 	sudo ufw allow https 
@@ -38,12 +40,26 @@ security:
 
 users:
 
-software:
+software:  ## install software
+	xargs -a $(PWD)/files/pkglist  sudo apt-get install -y
+	# dont need X11 stuff
+	apt remove -y x11-common apache2 > /dev/null          
+	apt autoremove -y  > /dev/null
+
+install-bbs:	cryptlib mysticbbs  	## INSTALL BBS SOFTWARE
+cryptlib:
+	cd $(PWD)/tmp ; curl https://cryptlib-release.s3-ap-southeast-1.amazonaws.com/$(CRYPTLIB).zip
+	# cd $(PWD)/tmp ; curl http://www.mysticbbs.com/downloads/cl3441.zip
+	unzip -a $(PWD)/tmp/$(CRYPTLIB).zip -d $(PWD)/tmp/$(CRYPTLIB)
+	sudo make -C $(PWD)/tmp/$(CRYPTLIB) shared
+	sudo install -o root -g root -m 755  $(PWD)/tmp/$(CRYPTLIB)/libcl.so.3.4.4 /usr/lib/libcl.so
+
 
 mysticbbs:
 	cd $(PWD)/tmp ; curl http://firewall mysticbbs.com/downloads/$(MYSTICBBS).zip
 	unzip  $(MYSTICBBS).zip
-	cd $(MYSTICBBS); 
+	cd $(MYSTICBBS);  echo do the install
+
 
 ################################################################################
 setup:  hardware network security users software  ## SETUP THIS MACHINE
