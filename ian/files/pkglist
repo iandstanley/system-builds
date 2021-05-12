@@ -17,6 +17,7 @@ dict-foldoc
 dosbox
 ed
 entr
+fbi
 firmware-iwlwifi
 firmware-misc-nonfree
 firmware-realtek
@@ -26,6 +27,7 @@ freebsd-mk
 ghostwriter
 gimp
 git
+gnome-control-center
 gnucash
 gnupg
 gpg

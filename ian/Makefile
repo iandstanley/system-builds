@@ -8,10 +8,51 @@ help:
 	| sort \
 	| awk 'BEGIN {FS = ":.*?## " ; print "\n\033[36mBuild system command options:\033[0m \n" }; {printf "  \033[36m%-30s\033[0m %s\n", $$1, $$2}; END { print "" }'
 
-setup:
+test: dummy
+	@echo run test stanza
+dummy:
+	@echo run dummy stanza
+
+################################################################################
+setup: network hardware security users ## SETUP THIS MACHINE
+
+network: 		## configure network
+	ip a
+
+firewall: firewall-rules	## setup firewall
+	sudo ufw enable
+	sudo ufw status verbose numbered
+firewall-install: firewall-rules
+	sudo apt install -y ufw
+firewall-rules:
+	cat $(PWD)/files/ufw_rules | xargs -L 1 sudo ufw 
+
+hardware: 	## install hardware support
+	xargs -a files/hardware-packages sudo apt-get install -y
+
+security:	gpgconfig sshconfig 	## secure server
+	sudo apt install -y apparmor  ufw 
+
+
+users: 		## configure users
+	echo "setting up users"
+	-sudo adduser ian 
+	sed -i 's/\ /,/g'  $(PWD)/files/users/ian/groups
+	-sudo usermod ian --groups $(shell cat $(PWD)/files/users/ian/groups )
+
+software:	software-repos pkginstall 	## setup software
+software-repos:
+	sudo install -o root -g root -m 0644 files/apt/* /etc/apt/sources.list.d 
+
+################################################################################
+
+save-my-groups:
+	groups | tee $(PWD)/files/users/ian/groups
+
+setup-tmp: 	
 	mkdir -p $(PWD)/tmp
 
-cleanup:
+cleanup-tmp: 
 	echo "rm -rf $(PWD)/tmp/*"
 
 git-projects: 	## Git clone current-projects into ~/Projects
@@ -40,17 +81,6 @@ pivy-tool: 		## install pivy-tool, pivy-agent, pivy-box and pivy-zfs
 	rm -rf $(HOME)/Projects/pivy
 pivy-tool-remove:
 	sudo rm -rf /usr/local/bin/pivy*
-
-
-users: 		## configure users
-	echo "setting up users"
-
-##	network:		configure network
-network: 		## configure network
-
-hardware: 	## install hardware support
-	xargs -a files/hardware-packages sudo apt-get install -y
-	
 
 #
 # Setup shell configs
