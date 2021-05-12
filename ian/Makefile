@@ -1,16 +1,28 @@
 HOSTNAME = ian
 #IPADDR = DHCP
-
+TORBROWSER = 10.0.16
+TORTMP = tmp/torversion
 
 help: 
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
 	| sort \
 	| awk 'BEGIN {FS = ":.*?## " ; print "\n\033[36mBuild system command options:\033[0m \n" }; {printf "  \033[36m%-30s\033[0m %s\n", $$1, $$2}; END { print "" }'
 
+setup:
+	mkdir -p $(PWD)/tmp
+
 cleanup:
-	echo "rm -rf $(TMP)/*"
+	echo "rm -rf $(PWD)/tmp/*"
 
-
+torbrowser:
+	rm -rf $(PWD)/tmp/* $(HOME)/tor-browser 
+	curl -s https://www.torproject.org/download/  | grep "downloadLink" | sed 's/^.*torbrowser\/// ' | sed 's/\/.*//' |uniq > tmp/torversion 
+	TORBROWSER=$(shell cat tmp/torversion )
+	wget https://www.torproject.org/dist/torbrowser/$(TORBROWSER)/tor-browser-linux64-$(TORBROWSER)_en-US.tar.xz -O tmp/tor-browser-linux64-$(TORBROWSER)_en-US.tar.xz 
+	unxz tmp/tor-browser-linux64-$(TORBROWSER)_en-US.tar.xz 
+	tar xvf tmp/tor-browser-linux64-$(TORBROWSER)_en-US.tar -C $(HOME)
+	mv $(HOME)/tor-browser_en-US $(HOME)/tor-browser 
+	cd $(HOME)/tor-browser; ./start-tor-browser.desktop  --register-app
 
 
 users: 		## configure users
@@ -24,23 +36,39 @@ hardware: 	## install hardware support
 	
 
 #
-# Setup shell
+# Setup shell configs
 #
+vim:
+	ln -s $(PWD)/.vimrc ~/.vimrc
+	ln -s $(PWD)/.vimwiki ~/.vimwiki
+	
 bash: 
 	echo "Setting up bash"
 
+misc-configs:
+	mkdir -p ~/.config
+	ln -s $(PWD)/.config/Bitwarden ~/.config/Bitwarden
+	ln -s $(PWD)/.config/calibre ~/.config/calibre
+	ln -s $(PWD)/.config/'Raspberry Pi' ~/.config/'Raspberry Pi'
+	ln -s $(PWD)/.config/Yubico ~/.config/Yubico
+	ln -s $(PWD)/.config/zathura ~/.config/zathura
+	ln -s $(PWD)/.config/kbibtexrc ~/.config/kbibtexrc
+	ln -s $(PWD)/.config/kleopatrarc ~/.config/kleopatrarc
+	
 
 #	Setup .config, .ssh, .gpg
 dotconfig:
-	mkdir -p $(PWD)/.config
-	
+	echo setup .config
+
 sshconfig:
-	mkdir -p $(PWD)/.ssh
+	echo setup .ssh
+	ln -s $(PWD)/.ssh ~/.ssh
 	
-gpgconfig:
-	mkdir -p $(PWD)/.gpg
+gnupgconfig:
+	echo setup .gpg 
 	git config --global user.name "Ian Stanley"
 	git config --global user.email "iandstanley@gmail.com"
+	ln -s $(PWD)/.gnupg ~/.gnupg
 	
 ##################################################################
 # Backup all installed files and packages to a file where I can restore 
@@ -49,13 +77,18 @@ backup: 		## Backup list of installed Debian linux packages
 	mkdir -p $(PWD)/files
 	apt-mark showmanual > $(PWD)/files/pkglist-current.txt
 	@echo "Create list of packages that differ from pkglist"
-	diff -u  $(PWD)/files/pkglist $(PWD)/files/pkglist-current.txt > $(PWD)/files/pkglist.diff
+	diff -u  $(PWD)/files/pkglist $(PWD)/files/pkglist-current.txt > $(PWD)/files/pkglist.diff || true
+#	using '|| true' to stop make from crashing from non-zero diff rc
 
 pipbackup: 		## Backup python packages
 	@echo "Backup Python PIP packages"
 	mkdir -p $(PWD)/files
 	pip freeze > $(PWD)/files/pip-current.txt
-	diff -u $(PWD)/files/pip-packages $(PWD)/files/pip-current.txt
+	diff -u $(PWD)/files/pip-packages $(PWD)/files/pip-current.txt || true
+piprecover: 	## Reinstall Python PIP packages
+	pip install --user -r ${PWD}/files/pip-packages
+piprecovercurrent: 	## Reinstall currently installed Python PIP packages
+	pip install --user -r ${PWD}/files/pip-current.txt
 #
 # Install ALL chosen packages
 #

@@ -379,6 +379,7 @@ plymouth
 procps
 pulseaudio
 pulseaudio-module-bluetooth
+python-pip
 python2.7
 python3
 python3-pip

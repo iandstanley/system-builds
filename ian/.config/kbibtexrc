@@ -1,0 +1,38 @@
+[DocumentList-Open]
+LastAccess-0=2021-04-22-17-22-55-263
+URL-0=/tmp/library.bib
+
+[DocumentList-RecentlyUsed]
+LastAccess-0=2021-04-22-17-52-51-096
+LastAccess-1=2021-04-22-17-22-55-263
+URL-0=/home/sabbath/Sabbath/library.bib
+URL-1=/tmp/library.bib
+
+[MainWindow]
+Height 1080=599
+State=AAAA/wAAAAD9AAAAAwAAAAAAAAFqAAACGvwCAAAAAvwAAAA9AAABJQAAASUBAAAe+gAAAAICAAAABPsAAAAaAGQAbwBjAGsAVgBhAGwAdQBlAEwAaQBzAHQBAAAAAP////8AAACdAP////sAAAAcAGQAbwBjAGsAUwB0AGEAdABpAHMAdABpAGMAcwEAAAAA/////wAAAOkA////+wAAACAAZABvAGMAawBGAGkAbABlAFMAZQB0AHQAaQBuAGcAcwEAAAAA/////wAAAQYA////+wAAACAAZABvAGMAawBEAG8AYwB1AG0AZQBuAHQATABpAHMAdAAAAAAA/////wAAAH4A/////AAAAWgAAADvAAAA7wEAAB76AAAAAAIAAAAC+wAAABwAZABvAGMAawBTAGUAYQByAGMAaABGAHIAbwBtAQAAAAD/////AAAA0AD////7AAAAKABkAG8AYwBrAFIAZQBmAGUAcgBlAG4AYwBlAFAAcgBlAHYAaQBlAHcBAAAAAP////8AAACfAP///wAAAAEAAAAAAAAAAPwCAAAAAfsAAAAmAGQAbwBjAGsARABvAGMAdQBtAGUAbgB0AFAAcgBlAHYAaQBlAHcAAAAAAP////8AAABgAP///wAAAAMAAAAAAAAAAPwBAAAAAvsAAAAeAGQAbwBjAGsAUgBlAHMAdQBsAHQAcwBGAHIAbwBtAAAAAAD/////AAACBwD////7AAAAHgBkAG8AYwBrAEUAbABlAG0AZQBuAHQARgByAG8AbQAAAAAA/////wAAA5YA////AAADAgAAAhoAAAABAAAAAgAAAAEAAAAC/AAAAAEAAAACAAAAAQAAABYAbQBhAGkAbgBUAG8AbwBsAEIAYQByAQAAAAD/////AAAAAAAAAAA=
+Width 1920=1138
+
+[Reference Preview Docklet]
+Style=bibtex
+
+[Search Engines Docklet]
+CERNDocumentServer=false
+DOI=false
+IDEASRePEc=false
+IngentaConnect=false
+InspireHigh-EnergyPhysicsLiteratureDatabase=false
+JSTOR=false
+MRLookup=false
+MathSciNet=false
+SAONASAAstrophysicsDataSystemADS=false
+bioRxiv=false
+
+[User Interface]
+EnableAllWidgets=true
+
+[Value List Docklet]
+FieldName=Author
+
+[WelcomeWidget]
+LRUlistHeaderState=\x00\x00\x00\xff\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x01\x00\x00\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01n\x00\x00\x00\x03\x01\x01\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00\x03\x00\x00\x00d\xff\xff\xff\xff\x00\x00\x00\x81\x00\x00\x00\x03\x00\x00\x00\x03\x00\x00\x00\\\x00\x00\x00\x01\x00\x00\x00\x03\x00\x00\x00\xae\x00\x00\x00\x01\x00\x00\x00\x03\x00\x00\x00d\x00\x00\x00\x01\x00\x00\x00\x03\x00\x00\x03\xe8\x00\x00\x00\x00d

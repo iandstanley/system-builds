@@ -1,0 +1,49 @@
+[CertificateDetailsDialog]
+Size=730,370
+
+[DN]
+AttributeOrder=CN,L,_X_,OU,O,C
+
+[DeleteCertificatesDialog]
+Size=600,400
+
+[ExportDialog]
+Size=600,800
+
+[Geometry]
+ConfigureDialogHeight=168
+ConfigureDialogWidth=608
+
+[Import Certificate]
+last-open-file-directory[$e]=$HOME/.gnupg/downloaded-keys
+
+[LookupCertificatesDialog]
+Size=600,400
+
+[MainWindow]
+Height 1080=440
+State=AAAA/wAAAAD9AAAAAAAAA8AAAAFkAAAABAAAAAQAAAAIAAAACPwAAAABAAAAAgAAAAEAAAAWAG0AYQBpAG4AVABvAG8AbABCAGEAcgEAAAAA/////wAAAAAAAAAA
+ToolBarsMovable=Disabled
+Width 1920=960
+
+[Self-Test]
+run-at-startup=true
+
+[SubKeysDialog]
+Size=820,280
+
+[Tooltip]
+show-owner-information=true
+
+[View #0]
+column-sizes=280,280,120,104,101,80,140
+hierarchical-view=true
+key-filter=all-certificates
+magic=262254561
+sort-column=0
+sort-descending=true
+string-filter=
+title=
+
+[WebOfTrustDialog]
+Size=900,400
