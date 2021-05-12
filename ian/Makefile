@@ -14,7 +14,13 @@ setup:
 cleanup:
 	echo "rm -rf $(PWD)/tmp/*"
 
-torbrowser:
+git-projects: 	## Git clone current-projects into ~/Projects
+	mkdir -p $(HOME)/Projects
+	cd $(HOME)/Projects; xargs -n 1 -a $(PWD)/files/current-projects git clone
+save-projects: 
+	find $(HOME)/Projects -type d  -execdir git remote -v ';' 2>/dev/null | awk '{print $$2}' |uniq| tee $(PWD)/files/current-projects
+
+torbrowser: ## install latest tor browser
 	rm -rf $(PWD)/tmp/* $(HOME)/tor-browser 
 	curl -s https://www.torproject.org/download/  | grep "downloadLink" | sed 's/^.*torbrowser\/// ' | sed 's/\/.*//' |uniq > tmp/torversion 
 	TORBROWSER=$(shell cat tmp/torversion )
@@ -23,6 +29,17 @@ torbrowser:
 	tar xvf tmp/tor-browser-linux64-$(TORBROWSER)_en-US.tar -C $(HOME)
 	mv $(HOME)/tor-browser_en-US $(HOME)/tor-browser 
 	cd $(HOME)/tor-browser; ./start-tor-browser.desktop  --register-app
+
+pivy-tool: 		## install pivy-tool, pivy-agent, pivy-box and pivy-zfs 
+	sudo apt install -y libpcsclite-dev libpcsclite1 pcsc-tools libbsd-dev libbsd0 
+	rm -rf $(HOME)/Projects/pivy
+	cd $(HOME)/Projects/; git clone git@github.com:joyent/pivy.git
+	make HAVE_ZFS=yes USE_ZFS=yes -C $(HOME)/Projects/pivy
+	-sudo addgroup --system wheel
+	sudo make   HAVE_ZFS=yes USE_ZFS=yes prefix=/usr/local  -C $(HOME)/Projects/pivy  install_pivyzfs
+	rm -rf $(HOME)/Projects/pivy
+pivy-tool-remove:
+	sudo rm -rf /usr/local/bin/pivy*
 
 
 users: 		## configure users
