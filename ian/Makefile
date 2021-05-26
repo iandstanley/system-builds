@@ -56,13 +56,14 @@ local-services:	gophernicus 	## Install services run locally
 
 ################################################################################
 
-veracrypt: veracrypt-gui veracrypt-console
+veracrypt: veracrypt-gui 
 	rm -rf $(PWD)/tmp/*
 veracrypt-gui:
-	cd $(PWD)/tmp ; curl https://launchpad.net/veracrypt/trunk/1.24-update7/+download/veracrypt-1.24-Update7-Debian-10-amd64.deb
+	sudo apt install -y libwxgtk3.0-gtk3-0v5
+	cd $(PWD)/tmp ; wget https://launchpad.net/veracrypt/trunk/1.24-update7/+download/veracrypt-1.24-Update7-Debian-10-amd64.deb
 	sudo dpkg -i $(PWD)/tmp/veracrypt-1.24-Update7-Debian-10-amd64.deb
 veracrypt-console:
-	cd $(PWD)/tmp ; curl https://launchpad.net/veracrypt/trunk/1.24-update7/+download/veracrypt-console-1.24-Update7-Debian-10-amd64.deb
+	cd $(PWD)/tmp ; wget https://launchpad.net/veracrypt/trunk/1.24-update7/+download/veracrypt-console-1.24-Update7-Debian-10-amd64.deb
 	sudo dpkg -i $(PWD)/tmp/veracrypt-console-1.24-Update7-Debian-10-amd64.deb
 
 gopher:
