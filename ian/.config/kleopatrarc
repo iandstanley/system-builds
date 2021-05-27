@@ -4,6 +4,9 @@ Size=730,370
 [DN]
 AttributeOrder=CN,L,_X_,OU,O,C
 
+[DecryptVerifyFilesDialog]
+geometry=\x01\xd9\xd0\xcb\x00\x02\x00\x00\x00\x00\x02v\x00\x00\x01\x11\x00\x00\x04\xf5\x00\x00\x02\xf0\x00\x00\x02v\x00\x00\x01\x11\x00\x00\x04\xf5\x00\x00\x02\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80
+
 [DeleteCertificatesDialog]
 Size=600,400
 
@@ -21,10 +24,10 @@ last-open-file-directory[$e]=$HOME/.gnupg/downloaded-keys
 Size=600,400
 
 [MainWindow]
-Height 1080=440
-State=AAAA/wAAAAD9AAAAAAAAA8AAAAFqAAAABAAAAAQAAAAIAAAACPwAAAABAAAAAgAAAAEAAAAWAG0AYQBpAG4AVABvAG8AbABCAGEAcgEAAAAA/////wAAAAAAAAAA
+Height 1080=628
+State=AAAA/wAAAAD9AAAAAAAAA/IAAAImAAAABAAAAAQAAAAIAAAACPwAAAABAAAAAgAAAAEAAAAWAG0AYQBpAG4AVABvAG8AbABCAGEAcgEAAAAA/////wAAAAAAAAAA
 ToolBarsMovable=Disabled
-Width 1920=960
+Width 1920=1010
 
 [MainWindow][Toolbar mainToolBar]
 IconSize=16

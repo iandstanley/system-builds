@@ -16,7 +16,7 @@ dummy2:
 	@echo run dummy stanza 2
 
 ################################################################################
-setup:  hardware network security users software  ## SETUP THIS MACHINE
+setup:  hardware beelink network security users software  ## SETUP THIS MACHINE
 
 network: dhcp		## configure network
 
@@ -37,6 +37,9 @@ firewall-rules:
 hardware: 	## install hardware support
 	xargs -a files/hardware-packages sudo apt-get install -y
 
+beelink:	## fix hardware support in Debian for Beelink pc
+	sudo apt install firmware-iwlwifi firmware-realtek firmware-misc-nonfree
+	
 security:	firewall gpgconfig sshconfig 	## secure server
 	sudo apt install -y apparmor  ufw 
 
@@ -50,9 +53,17 @@ software:	software-repos pkginstall other-software	## setup software
 software-repos:
 	sudo install -o root -g root -m 0644 files/apt/* /etc/apt/sources.list.d 
 	sudo apt update
-other-software:		torbrowser  pivy-tool
+brave-browser:		## Install Brave browser
+	sudo apt install -y apt-transport-https curl gnupg
+	curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
+	echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list
+	sudo apt update
+	sudo apt install -y brave-browser
 
-local-services:	gophernicus 	## Install services run locally
+
+other-software:		yubikey  torbrowser  pivy-tool
+
+local-services:		gophernicus 	## Install services run locally
 
 ################################################################################
 
@@ -105,6 +116,10 @@ torbrowser: ## install latest tor browser
 	tar xvf tmp/tor-browser-linux64-$(TORBROWSER)_en-US.tar -C $(HOME)
 	mv $(HOME)/tor-browser_en-US $(HOME)/tor-browser 
 	cd $(HOME)/tor-browser; ./start-tor-browser.desktop  --register-app
+
+yubikey:		## Install Yubikey tools
+	sudo apt install -y yubikey-luks yubikey-manager yubikey-personalization yubikey-personalization-gui
+	sudo install -o root -g root -m 0644 files/yubikey-oath.desktop /usr/share/applications
 
 pivy-tool: 		## install pivy-tool, pivy-agent, pivy-box and pivy-zfs 
 	sudo apt install -y libpcsclite-dev libpcsclite1 pcsc-tools libbsd-dev libbsd0 

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Yubikey OATH
+Comment=TOTP and HOTP for Yubikey see https://developers.yubico.com/OATH/YubiKey_OATH_software.html
+GenericName=Yubikey TOTP HOTP
+X-GNOME-FullName=Yubikey OATH
+Exec=/home/ian/scripts/yubikey/yubioath-desktop-5.0.4-linux.AppImage
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+StartupWMClass=YubiOATH
+StartupNotify=true
